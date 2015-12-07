@@ -1,11 +1,23 @@
 # Authentication Service
 
 ## Login:
+request:
 ```
-curl http://localhost:8080/authn/rest/login?username=pippo
+POST /authn/rest/login HTTP/1.1
+Host: localhost:8080
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded
 
-{"expire":1449508544771,"value":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaXBwbyIsImV4cCI6MTQ0OTUwODU0NCwicm9sZXMiOlsidXNlciJdfQ.i31TNsQlncXzspk8ewTexTFq05l-yLWwcvuSKnKqt4ok0uHx1qWAfibY3fpTMhJsw8MP
-flR2F7gl6_tc2Zj1-g"}
+username=alex&password=pippo
+```
+response:
+
+```json
+{
+    "valid": true,
+    "expire": 1449517054208,
+    "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4IiwiZXhwIjoxNDQ5NTE3MDU0LCJyb2xlcyI6WyJ1c2VyIl19.O-1sFTWZCvjoMKVMlZeT7TMDe_4ejygFbrTjfJ7qNAOByHVrQOseI1Q3VpkVIQHUMvypk8kkM2OnC9BOEHTzHg"
+}
 ```
 ## Authentication with url param
 ```

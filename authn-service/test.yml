@@ -20,3 +20,11 @@ authKey:
    
 authTimeout:
    3600
+   
+database:
+   username: root
+   password: root
+   autoCommit: false
+   host: localhost
+   port: 3306
+   schema: auth

@@ -6,9 +6,12 @@ import io.dropwizard.setup.Environment;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
+import com.google.inject.Module;
 
-import eu.hcomb.authn.resources.UsernamePasswordAuthentication;
+import eu.hcomb.authn.resources.UsernamePasswordLogin;
 import eu.hcomb.authn.resources.WhoAmI;
+import eu.hcomb.authn.service.UserService;
+import eu.hcomb.authn.service.impl.UserServiceImpl;
 import eu.hcomb.common.auth.TokenAuthenticator;
 import eu.hcomb.common.auth.UserAuthorizer;
 import eu.hcomb.common.service.TokenService;
@@ -35,6 +38,10 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 			.bind(Authorizer.class)
 			.to(UserAuthorizer.class);
 
+		binder
+			.bind(UserService.class)
+			.to(UserServiceImpl.class);
+
 	}	
 
 	@Override
@@ -42,11 +49,13 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		
 		defaultConfig(environment, configuration);
 
-        injector = Guice.createInjector(this);
+		Module persistence = new AuthenticationPersistence(configuration);
+
+		injector = Guice.createInjector(this, persistence);
 
         setupSecurity(environment, "token", "jwt", "realm", "Bearer");
         
-		environment.jersey().register(injector.getInstance(UsernamePasswordAuthentication.class));
+		environment.jersey().register(injector.getInstance(UsernamePasswordLogin.class));
 		environment.jersey().register(injector.getInstance(WhoAmI.class));
 				
 	}
