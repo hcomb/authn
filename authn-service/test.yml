@@ -20,7 +20,7 @@ authKey:
 authTimeout:
    3600
    
-database:
+jdbcConfig:
    username: root
    password: root
    autoCommit: false
@@ -28,3 +28,10 @@ database:
    port: 3306
    schema: authn
    healthCheckQuery: SELECT id FROM users LIMIT 0,1
+
+corsConfig:
+   methods: GET,POST,PUT,DELETE,OPTIONS
+   origins: localhost, test.localhost
+   headers: Cookie, Authorization
+   allowCredentials: true
+   
