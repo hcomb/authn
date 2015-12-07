@@ -7,6 +7,8 @@ import org.mybatis.guice.MyBatisModule;
 import org.mybatis.guice.datasource.builtin.PooledDataSourceProvider;
 import org.mybatis.guice.datasource.helper.JdbcHelper;
 
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 import eu.hcomb.authn.service.mapper.UserMapper;
@@ -42,5 +44,11 @@ public class AuthenticationPersistence extends MyBatisModule {
         myBatisProperties.setProperty("JDBC.port", configuration.getDatabase().getPort());
         myBatisProperties.setProperty("JDBC.schema", configuration.getDatabase().getSchema());
         return myBatisProperties;
+	}
+	
+	@Provides
+	@Named("healthcheck.query")
+	public String getHealthCheckQuery(){
+		return configuration.getDatabase().getHealthCheckQuery();
 	}
 }

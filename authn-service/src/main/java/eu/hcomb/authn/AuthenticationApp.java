@@ -1,18 +1,11 @@
 package eu.hcomb.authn;
 
-import java.security.Key;
-
-import javax.crypto.spec.SecretKeySpec;
-
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.Authorizer;
 import io.dropwizard.setup.Environment;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.Base64Codec;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
-import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
@@ -51,12 +44,6 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 			.bind(UserService.class)
 			.to(UserServiceImpl.class);
 
-	}	
-
-	@Provides
-	@Named("healthcheck.query")
-	public String getHealthCheckQuery(){
-		return ((AuthenticationConfig)configuration).getDatabase().getHealthCheckQuery();
 	}
 
 	@Override
