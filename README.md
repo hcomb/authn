@@ -4,8 +4,6 @@
 request:
 ```
 POST /authn/rest/login HTTP/1.1
-Host: localhost:8080
-Cache-Control: no-cache
 Content-Type: application/x-www-form-urlencoded
 
 username=alex&password=pippo
@@ -21,24 +19,46 @@ response:
 ```
 ## Authentication with url param
 ```
-curl http://localhost:8080/authn/rest/whoami?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaXBwbyIsImV4cCI6MTQ0OTUwODU0NCwicm9sZXMiOlsidXNlciJdfQ.i31TNsQlncXzspk8ewTexTFq05l-yLWwcvuSKnKqt4ok0uH
-x1qWAfibY3fpTMhJsw8MPflR2F7gl6_tc2Zj1-g
+GET /authn/rest/whoami?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4IiwiZXhwIjoxNDQ5NTE3NDA0LCJyb2xlcyI6WyJ1c2VyIl19.-ypSzNo1JlS9pWVR7jZOs1Z2xCWA4NK2ganxA3a-HBysspJoE1JhWk5ZUpeMKKwitz9jjWVhuMB_SVV-_dOp7w HTTP/1.1
+```
 
-{"name":"pippo","roles":["user"]}
+```json
+{
+    "name": "alex",
+    "roles": [
+        "user"
+    ]
+}
 ```
 
 ## Authentication with cookie
 
 ```
-curl --header "Cookie: jwt=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaXBwbyIsImV4cCI6MTQ0OTUwODU0NCwicm9sZXMiOlsidXNlciJdfQ.i31TNsQlncXzspk8ewTexTFq05l-yLWwcvuSKnKqt4ok0uHx1qWAfibY3fpTMhJsw8MPflR2F7gl6_tc2Zj1-g;" http://localhost:8080/authn/rest/whoami
+GET /authn/rest/whoami HTTP/1.1
+Cookie: jwt=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4IiwiZXhwIjoxNDQ5NTE3NDA0LCJyb2xlcyI6WyJ1c2VyIl19.-ypSzNo1JlS9pWVR7jZOs1Z2xCWA4NK2ganxA3a-HBysspJoE1JhWk5ZUpeMKKwitz9jjWVhuMB_SVV-_dOp7w;
+```
 
-{"name":"pippo","roles":["user"]}
+```json
+{
+    "name": "alex",
+    "roles": [
+        "user"
+    ]
+}
 ```
 
 ## Authentication with header
 
 ```
-curl --header "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaXBwbyIsImV4cCI6MTQ0OTUwODU0NCwicm9sZXMiOlsidXNlciJdfQ.i31TNsQlncXzspk8ewTexTFq05l-yLWwcvuSKnKqt4ok0uHx1qWAfibY3fpTMhJsw8MPflR2F7gl6_tc2Zj1-g" http://localhost:8080/authn/rest/whoami
+GET /authn/rest/whoami HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4IiwiZXhwIjoxNDQ5NTE3NDA0LCJyb2xlcyI6WyJ1c2VyIl19.-ypSzNo1JlS9pWVR7jZOs1Z2xCWA4NK2ganxA3a-HBysspJoE1JhWk5ZUpeMKKwitz9jjWVhuMB_SVV-_dOp7w
+```
 
-{"name":"pippo","roles":["user"]}
+```json
+{
+    "name": "alex",
+    "roles": [
+        "user"
+    ]
+}
 ```
