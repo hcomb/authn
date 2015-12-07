@@ -17,7 +17,6 @@ logging:
 
 authKey:
    tXBeLe1SX3zR2swZX4Rs5b4QSA3yzG9D2jTEO1DbeQM60nGqntr3+2jdraQlPixp40rTbic9spYH37KLprH3rQ==
-   
 authTimeout:
    3600
    
@@ -27,4 +26,5 @@ database:
    autoCommit: false
    host: localhost
    port: 3306
-   schema: auth
+   schema: authn
+   healthCheckQuery: SELECT id FROM users LIMIT 0,1
