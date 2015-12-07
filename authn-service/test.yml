@@ -1,0 +1,22 @@
+server:
+  applicationConnectors:
+  - type: http 
+    port: 8080
+  adminConnectors:
+  - type: http
+    port: 8081
+  applicationContextPath: /authn/rest
+  adminContextPath: /authn/admin
+    
+logging:
+  level: WARN
+  loggers:
+    "com.sun.jersey.api.client": DEBUG
+    "io.dropwizard": DEBUG
+    "eu.hcomb": DEBUG
+
+authKey:
+   tXBeLe1SX3zR2swZX4Rs5b4QSA3yzG9D2jTEO1DbeQM60nGqntr3+2jdraQlPixp40rTbic9spYH37KLprH3rQ==
+   
+authTimeout:
+   3600
