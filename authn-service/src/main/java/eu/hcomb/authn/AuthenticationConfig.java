@@ -1,5 +1,12 @@
 package eu.hcomb.authn;
 
+import io.dropwizard.client.JerseyClientConfiguration;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import eu.hcomb.common.cors.CorsConfig;
 import eu.hcomb.common.cors.CorsConfigurable;
 import eu.hcomb.common.jdbc.JdbcConfig;
@@ -19,4 +26,19 @@ public class AuthenticationConfig extends BaseConfig implements CorsConfigurable
 	public CorsConfig getCorsConfig() {
 		return corsConfig;
 	}
+	
+	protected String authzUrl;
+
+	public String getAuthzUrl() {
+		return authzUrl;
+	}
+	
+	@Valid
+    @NotNull
+    protected JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration();
+
+    @JsonProperty("jerseyClient")
+    public JerseyClientConfiguration getJerseyClientConfiguration() {
+        return jerseyClient;
+    }
 }

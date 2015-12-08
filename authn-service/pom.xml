@@ -11,9 +11,16 @@
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-core</artifactId>
+			<version>${dropwizard.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-client</artifactId>
 			<version>${dropwizard.version}</version>
 		</dependency>
 
@@ -32,6 +39,12 @@
 		<dependency>
 			<groupId>eu.hcomb</groupId>
 			<artifactId>common-service</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.hcomb</groupId>
+			<artifactId>authz-client</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 

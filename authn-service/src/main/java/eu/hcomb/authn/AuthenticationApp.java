@@ -1,11 +1,16 @@
 package eu.hcomb.authn;
 
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Environment;
+
+import javax.ws.rs.client.Client;
 
 import org.mybatis.guice.datasource.helper.JdbcHelper;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 import eu.hcomb.authn.resources.UsernamePasswordLogin;
 import eu.hcomb.authn.service.UserService;
@@ -22,17 +27,23 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		new AuthenticationApp().run(args);
 	}
 	
+	AuthenticationConfig configuration;
+	
+	Client client;
+	
 	public void configure(Binder binder) {
 		configureSecurity(binder);
 
 		binder
 			.bind(UserService.class)
 			.to(UserServiceImpl.class);
-
+		
 	}
 
 	@Override
 	public void run(AuthenticationConfig configuration, Environment environment) {
+
+		this.configuration = configuration;
 		
 		DefaultPersistenceModule persistence = new DefaultPersistenceModule(configuration) {
 			@Override
@@ -47,6 +58,8 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 
 		defaultConfig(environment, configuration);
         
+		client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
+		
 		environment.jersey().register(injector.getInstance(UsernamePasswordLogin.class));
 		environment.jersey().register(injector.getInstance(WhoAmI.class));
 		
@@ -54,4 +67,14 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 				
 	}
 	
+	@Provides
+	@Named("authz.url")
+	public String getAuthzUrl(){
+		return configuration.getAuthzUrl();
+	}
+
+	@Provides
+	public Client getClient(){
+		return this.client;
+	}
 }

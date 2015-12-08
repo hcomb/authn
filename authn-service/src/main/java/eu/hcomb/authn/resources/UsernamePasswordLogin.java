@@ -1,5 +1,7 @@
 package eu.hcomb.authn.resources;
 
+import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,6 +14,7 @@ import com.google.inject.Inject;
 
 import eu.hcomb.authn.dto.UserDTO;
 import eu.hcomb.authn.service.UserService;
+import eu.hcomb.authz.client.AuthorizationClient;
 import eu.hcomb.common.dto.Token;
 import eu.hcomb.common.service.TokenService;
 
@@ -25,6 +28,9 @@ public class UsernamePasswordLogin {
 	@Inject
 	protected UserService userService;
 	
+    @Inject
+    private AuthorizationClient authzClient;
+	
     @POST
     @Timed
     public Token login(@FormParam("username") Optional<String> username, @FormParam("password") Optional<String> password) {
@@ -34,7 +40,9 @@ public class UsernamePasswordLogin {
     	if(user == null)
     		return new Token(false);
     	
-    	Token token = tokenService.getToken(user.getUsername(), new String[]{"user"});
+    	List<String> roles = authzClient.getRolesByUser(user.getUsername());
+    	
+    	Token token = tokenService.getToken(user.getUsername(), roles);
     	
     	return token;
     }

@@ -34,4 +34,6 @@ corsConfig:
    origins: localhost, test.localhost
    headers: Cookie, Authorization
    allowCredentials: true
-   
+
+authzUrl:
+   http://localhost:8180/authz/rest
