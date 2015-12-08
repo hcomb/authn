@@ -22,7 +22,7 @@ import eu.hcomb.authz.client.AuthorizationClient;
 import eu.hcomb.common.dto.Token;
 import eu.hcomb.common.service.TokenService;
 
-@Api
+@Api(tags="login")
 @Path("/login")
 @Produces(MediaType.APPLICATION_JSON)
 public class UsernamePasswordLogin {

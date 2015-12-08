@@ -1,8 +1,8 @@
 package eu.hcomb.authn.resources;
 
-import io.swagger.annotations.ExternalDocs;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 @SwaggerDefinition(
         info = @Info(
@@ -10,7 +10,10 @@ import io.swagger.annotations.SwaggerDefinition;
                 title = "User service",
                 description = "Exposes user CRUD and user login operations"
         ),
-        schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS},
-        externalDocs = @ExternalDocs(value = "JWT - Json Web Token", url = "https://en.wikipedia.org/wiki/JSON_Web_Token")
+        tags = {
+        	@Tag(name = "user", description = "User CRUD"),
+        	@Tag(name = "login", description = "User login")
+        },
+        schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS}
 )
 public interface ApiConfig { }

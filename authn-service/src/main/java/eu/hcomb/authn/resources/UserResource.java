@@ -23,7 +23,7 @@ import eu.hcomb.authn.dto.UserDTO;
 import eu.hcomb.authn.service.UserService;
 
 @Path("/users")
-@Api
+@Api(tags="user")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 

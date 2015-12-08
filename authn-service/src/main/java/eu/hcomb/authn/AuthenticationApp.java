@@ -1,7 +1,6 @@
 package eu.hcomb.authn;
 
 import io.dropwizard.client.JerseyClientBuilder;
-import io.dropwizard.server.DefaultServerFactory;
 import io.dropwizard.setup.Environment;
 
 import javax.ws.rs.client.Client;
