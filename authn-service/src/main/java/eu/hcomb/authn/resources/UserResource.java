@@ -1,5 +1,8 @@
 package eu.hcomb.authn.resources;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -20,6 +23,7 @@ import eu.hcomb.authn.dto.UserDTO;
 import eu.hcomb.authn.service.UserService;
 
 @Path("/users")
+@Api
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
@@ -28,6 +32,7 @@ public class UserResource {
 	
     @GET
     @Timed
+    @ApiOperation(value="User list.", notes = "Get the users list.")
     public List<UserDTO> list() {
     	return userService.getAllUsers();
     }
@@ -35,12 +40,14 @@ public class UserResource {
     @GET
     @Timed
     @Path("/{id}")
+    @ApiOperation(value="User by id.", notes = "Get a single user by id.")
     public UserDTO get(@PathParam("id") Long id) {
     	return userService.getUserById(id);
     }
 
     @POST
     @Timed
+    @ApiOperation(value="Add User.", notes = "Add a new user.")
     public UserDTO add(UserDTO user) throws NoSuchAlgorithmException, InvalidKeySpecException {
     	return userService.insertUser(user);
     }
@@ -48,6 +55,7 @@ public class UserResource {
     @PUT
     @Timed
     @Path("/{id}")
+    @ApiOperation(value="Update User", notes = "Update an user by id.")
     public UserDTO update(@PathParam("id") Long id, UserDTO user) throws NoSuchAlgorithmException, InvalidKeySpecException {
     	user.setId(id);
     	return userService.updateUser(user);
@@ -56,6 +64,7 @@ public class UserResource {
     @DELETE
     @Timed
     @Path("/{id}")
+    @ApiOperation(value="Delete User", notes = "Delete an user by id.")
     public void delete(@PathParam("id") Long id) throws NoSuchAlgorithmException, InvalidKeySpecException {
     	userService.deleteUser(id);
     }

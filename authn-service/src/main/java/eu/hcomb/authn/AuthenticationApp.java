@@ -1,6 +1,7 @@
 package eu.hcomb.authn;
 
 import io.dropwizard.client.JerseyClientBuilder;
+import io.dropwizard.server.DefaultServerFactory;
 import io.dropwizard.setup.Environment;
 
 import javax.ws.rs.client.Client;
@@ -64,11 +65,13 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		environment.jersey().register(injector.getInstance(UsernamePasswordLogin.class));
 		environment.jersey().register(injector.getInstance(WhoAmI.class));
 		environment.jersey().register(injector.getInstance(UserResource.class));
+
+		setUpSwagger(configuration, environment);
 		
 		environment.healthChecks().register("mysql", injector.getInstance(DatasourceHealthCheck.class));
 				
 	}
-	
+		
 	@Provides
 	@Named("authz.url")
 	public String getAuthzUrl(){

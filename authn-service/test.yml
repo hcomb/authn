@@ -5,7 +5,7 @@ server:
   adminConnectors:
   - type: http
     port: 8081
-  applicationContextPath: /authn/rest
+  applicationContextPath: /authn/api
   adminContextPath: /authn/admin
     
 logging:
@@ -20,6 +20,9 @@ authKey:
 authTimeout:
    3600
    
+authzUrl:
+   http://localhost:8180/authz/api
+      
 jdbcConfig:
    username: root
    password: root
@@ -31,9 +34,10 @@ jdbcConfig:
 
 corsConfig:
    methods: GET,POST,PUT,DELETE,OPTIONS
-   origins: localhost, test.localhost
-   headers: Cookie, Authorization
+   origins: "*"
+   headers: Cookie, Authorization, accept, accept-language, content-type
    allowCredentials: true
 
-authzUrl:
-   http://localhost:8180/authz/rest
+swaggerConfig:
+   baseUrl: localhost:8080
+   resourcePackages: eu.hcomb.common.resources,eu.hcomb.authn.resources   
