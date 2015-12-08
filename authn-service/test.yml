@@ -26,7 +26,7 @@ jdbcConfig:
    autoCommit: false
    host: localhost
    port: 3306
-   schema: authn
+   schema: hcomb_authn
    healthCheckQuery: SELECT id FROM users LIMIT 0,1
 
 corsConfig:

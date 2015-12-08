@@ -12,6 +12,7 @@ import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
+import eu.hcomb.authn.resources.UserResource;
 import eu.hcomb.authn.resources.UsernamePasswordLogin;
 import eu.hcomb.authn.service.UserService;
 import eu.hcomb.authn.service.impl.UserServiceImpl;
@@ -62,6 +63,7 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		
 		environment.jersey().register(injector.getInstance(UsernamePasswordLogin.class));
 		environment.jersey().register(injector.getInstance(WhoAmI.class));
+		environment.jersey().register(injector.getInstance(UserResource.class));
 		
 		environment.healthChecks().register("mysql", injector.getInstance(DatasourceHealthCheck.class));
 				
