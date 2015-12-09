@@ -8,6 +8,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -42,7 +43,7 @@ public class AuthenticationClient {
 
         Invocation.Builder invocationBuilder = webResource.request();
         
-        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).delete();
+        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).delete();
         
         return response.getStatus();
 	}
@@ -52,7 +53,7 @@ public class AuthenticationClient {
 
         Invocation.Builder invocationBuilder = webResource.request();
         
-        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).put(Entity.entity(user, MediaType.APPLICATION_JSON));
+        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).put(Entity.entity(user, MediaType.APPLICATION_JSON));
         
         return response.readEntity(UserDTO.class);
 	}
@@ -62,7 +63,7 @@ public class AuthenticationClient {
 
         Invocation.Builder invocationBuilder = webResource.request();
         
-        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).post(Entity.entity(user, MediaType.APPLICATION_JSON));
+        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).post(Entity.entity(user, MediaType.APPLICATION_JSON));
         
         return response.readEntity(UserDTO.class);
 	}
@@ -72,7 +73,7 @@ public class AuthenticationClient {
 
         Invocation.Builder invocationBuilder = webResource.request();
         
-        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).get();
+        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
         
         return response.readEntity(UserDTO.class);
 	}
@@ -82,7 +83,7 @@ public class AuthenticationClient {
 
         Invocation.Builder invocationBuilder = webResource.request();
         
-        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).get();
+        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
         
         return response.readEntity(new GenericType<List<UserDTO>>(){});
 	}
@@ -92,7 +93,7 @@ public class AuthenticationClient {
 
         Invocation.Builder invocationBuilder = webResource.request();
         
-        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).get();
+        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
         
         return response.readEntity(PrincipalDTO.class);
 	}
