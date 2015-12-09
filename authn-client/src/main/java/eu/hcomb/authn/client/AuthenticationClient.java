@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
+import eu.hcomb.authn.dto.PrincipalDTO;
 import eu.hcomb.authn.dto.TokenDTO;
 
 @Singleton
@@ -21,7 +22,7 @@ public class AuthenticationClient {
 	private Client jerseyClient;
 	
 	@Inject
-	@Named("authz.url")
+	@Named("authn.url")
 	private String targetUrl;
 	
     public void setJerseyClient(Client jerseyClient) {
@@ -32,6 +33,16 @@ public class AuthenticationClient {
 		this.targetUrl = targetUrl;
 	}
 
+	public PrincipalDTO whoami(TokenDTO token) {
+        WebTarget webResource = jerseyClient.target(targetUrl).path("/whoami");
+
+        Invocation.Builder invocationBuilder = webResource.request();
+        
+        Response response = invocationBuilder.header("Authorization", "Bearer "+token.getValue()).get();
+        
+        return response.readEntity(PrincipalDTO.class);
+	}
+	
 	public TokenDTO login(String username, String password) {
         WebTarget webResource = jerseyClient.target(targetUrl).path("/login");
 
