@@ -11,6 +11,7 @@ server:
 logging:
   level: WARN
   loggers:
+    "org.glassfish.jersey.servlet.WebComponent": ERROR
     "com.sun.jersey.api.client": DEBUG
     "io.dropwizard": DEBUG
     "eu.hcomb": DEBUG
