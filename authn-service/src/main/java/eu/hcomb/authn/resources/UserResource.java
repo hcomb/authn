@@ -1,5 +1,6 @@
 package eu.hcomb.authn.resources;
 
+import io.dropwizard.auth.Auth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -7,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,6 +23,7 @@ import com.google.inject.Inject;
 
 import eu.hcomb.authn.dto.UserDTO;
 import eu.hcomb.authn.service.UserService;
+import eu.hcomb.common.dto.User;
 
 @Path("/users")
 @Api(tags="user")
@@ -33,6 +36,7 @@ public class UserResource {
     @GET
     @Timed
     @ApiOperation(value="User list.", notes = "Get the users list.")
+    @RolesAllowed("ADMIN")
     public List<UserDTO> list() {
     	return userService.getAllUsers();
     }
@@ -41,6 +45,7 @@ public class UserResource {
     @Timed
     @Path("/{id}")
     @ApiOperation(value="User by id.", notes = "Get a single user by id.")
+    @RolesAllowed("ADMIN")
     public UserDTO get(@PathParam("id") Long id) {
     	return userService.getUserById(id);
     }
@@ -48,6 +53,7 @@ public class UserResource {
     @POST
     @Timed
     @ApiOperation(value="Add User.", notes = "Add a new user.")
+    @RolesAllowed("ADMIN")
     public UserDTO add(UserDTO user) throws NoSuchAlgorithmException, InvalidKeySpecException {
     	return userService.insertUser(user);
     }
@@ -56,6 +62,7 @@ public class UserResource {
     @Timed
     @Path("/{id}")
     @ApiOperation(value="Update User", notes = "Update an user by id.")
+    @RolesAllowed("ADMIN")
     public UserDTO update(@PathParam("id") Long id, UserDTO user) throws NoSuchAlgorithmException, InvalidKeySpecException {
     	user.setId(id);
     	return userService.updateUser(user);
@@ -65,6 +72,7 @@ public class UserResource {
     @Timed
     @Path("/{id}")
     @ApiOperation(value="Delete User", notes = "Delete an user by id.")
+    @RolesAllowed("ADMIN")
     public void delete(@PathParam("id") Long id) throws NoSuchAlgorithmException, InvalidKeySpecException {
     	userService.deleteUser(id);
     }
