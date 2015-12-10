@@ -45,6 +45,8 @@ public class AuthenticationClient {
         
         Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).delete();
         
+        expect(response, new int[]{204});
+
         return response.getStatus();
 	}
 
@@ -54,7 +56,9 @@ public class AuthenticationClient {
         Invocation.Builder invocationBuilder = webResource.request();
         
         Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).put(Entity.entity(user, MediaType.APPLICATION_JSON));
-        
+
+        expect(response, new int[]{200});
+
         return response.readEntity(UserDTO.class);
 	}
 	
@@ -64,7 +68,9 @@ public class AuthenticationClient {
         Invocation.Builder invocationBuilder = webResource.request();
         
         Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).post(Entity.entity(user, MediaType.APPLICATION_JSON));
-        
+
+        expect(response, new int[]{200});
+
         return response.readEntity(UserDTO.class);
 	}
 	
@@ -74,8 +80,13 @@ public class AuthenticationClient {
         Invocation.Builder invocationBuilder = webResource.request();
         
         Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
-        
-        return response.readEntity(UserDTO.class);
+
+        expect(response, new int[]{200,204});
+
+        if(response.getStatus() == 204)
+        	return null;
+        else
+        	return response.readEntity(UserDTO.class);
 	}
 	
 	public List<UserDTO> getAllUsers(TokenDTO token) {
@@ -84,7 +95,9 @@ public class AuthenticationClient {
         Invocation.Builder invocationBuilder = webResource.request();
         
         Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
-        
+
+        expect(response, new int[]{200});
+
         return response.readEntity(new GenericType<List<UserDTO>>(){});
 	}
 
@@ -94,6 +107,8 @@ public class AuthenticationClient {
         Invocation.Builder invocationBuilder = webResource.request();
         
         Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
+
+        expect(response, new int[]{200});
         
         return response.readEntity(PrincipalDTO.class);
 	}
@@ -109,6 +124,20 @@ public class AuthenticationClient {
         
         Response response = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
 
+        expect(response, new int[]{200});
+
         return response.readEntity(TokenDTO.class);
     }
+
+
+	private void expect(Response response, int[] statusCode) {
+		boolean found = false;
+		for (int i = 0; i < statusCode.length; i++) {
+			if(response.getStatus() == statusCode[i])
+				found = true;
+		}
+		if(!found)
+			throw new RuntimeException("expecting response status "+statusCode+" but got "+ response.getStatus());
+
+	}
 }
