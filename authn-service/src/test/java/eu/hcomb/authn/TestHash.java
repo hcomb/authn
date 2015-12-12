@@ -1,6 +1,6 @@
 package eu.hcomb.authn;
 
-import eu.hcomb.authn.service.impl.PasswordHash;
+import eu.hcomb.common.crypt.PasswordHash;
 
 public class TestHash {
 

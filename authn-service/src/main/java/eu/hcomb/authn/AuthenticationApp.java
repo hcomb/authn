@@ -12,11 +12,7 @@ import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
-import eu.hcomb.authn.resources.UserResource;
 import eu.hcomb.authn.resources.UsernamePasswordLogin;
-import eu.hcomb.authn.service.UserService;
-import eu.hcomb.authn.service.impl.UserServiceImpl;
-import eu.hcomb.authn.service.mapper.UserMapper;
 import eu.hcomb.common.healthcheck.DatasourceHealthCheck;
 import eu.hcomb.common.jdbc.DefaultPersistenceModule;
 import eu.hcomb.common.resources.WhoAmI;
@@ -35,9 +31,6 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 	public void configure(Binder binder) {
 		configureSecurity(binder);
 
-		binder
-			.bind(UserService.class)
-			.to(UserServiceImpl.class);
 		
 	}
 
@@ -45,17 +38,8 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 	public void run(AuthenticationConfig configuration, Environment environment) {
 
 		this.configuration = configuration;
-		
-		DefaultPersistenceModule persistence = new DefaultPersistenceModule(configuration) {
-			@Override
-			protected void initialize() {
-				install(JdbcHelper.MySQL);
-				setup();
-		        addMapperClass(UserMapper.class);				
-			}
-		};
 
-		injector = Guice.createInjector(this, persistence);
+		injector = Guice.createInjector(this);
 
 		defaultConfig(environment, configuration);
         
@@ -63,12 +47,9 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		
 		environment.jersey().register(injector.getInstance(UsernamePasswordLogin.class));
 		environment.jersey().register(injector.getInstance(WhoAmI.class));
-		environment.jersey().register(injector.getInstance(UserResource.class));
 
 		setUpSwagger(configuration, environment);
-		
-		environment.healthChecks().register("mysql", injector.getInstance(DatasourceHealthCheck.class));
-				
+						
 	}
 		
 	@Provides

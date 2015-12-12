@@ -1,13 +1,10 @@
 package eu.hcomb.authn.client;
 
-import java.util.List;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,7 +15,6 @@ import com.google.inject.name.Named;
 
 import eu.hcomb.authn.dto.PrincipalDTO;
 import eu.hcomb.authn.dto.TokenDTO;
-import eu.hcomb.authn.dto.UserDTO;
 
 @Singleton
 public class AuthenticationClient {
@@ -36,69 +32,6 @@ public class AuthenticationClient {
 
 	public void setTargetUrl(String targetUrl) {
 		this.targetUrl = targetUrl;
-	}
-
-	public int deleteUser(TokenDTO token, Long id) {
-        WebTarget webResource = jerseyClient.target(targetUrl).path("/users/"+id);
-
-        Invocation.Builder invocationBuilder = webResource.request();
-        
-        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).delete();
-        
-        expect(response, new int[]{204});
-
-        return response.getStatus();
-	}
-
-	public UserDTO updateUser(TokenDTO token, Long id, UserDTO user) {
-        WebTarget webResource = jerseyClient.target(targetUrl).path("/users/"+id);
-
-        Invocation.Builder invocationBuilder = webResource.request();
-        
-        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).put(Entity.entity(user, MediaType.APPLICATION_JSON));
-
-        expect(response, new int[]{200});
-
-        return response.readEntity(UserDTO.class);
-	}
-	
-	public UserDTO insertUser(TokenDTO token, UserDTO user) {
-        WebTarget webResource = jerseyClient.target(targetUrl).path("/users");
-
-        Invocation.Builder invocationBuilder = webResource.request();
-        
-        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).post(Entity.entity(user, MediaType.APPLICATION_JSON));
-
-        expect(response, new int[]{200});
-
-        return response.readEntity(UserDTO.class);
-	}
-	
-	public UserDTO getUserById(TokenDTO token, Long id) {
-        WebTarget webResource = jerseyClient.target(targetUrl).path("/users/"+id);
-
-        Invocation.Builder invocationBuilder = webResource.request();
-        
-        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
-
-        expect(response, new int[]{200,204});
-
-        if(response.getStatus() == 204)
-        	return null;
-        else
-        	return response.readEntity(UserDTO.class);
-	}
-	
-	public List<UserDTO> getAllUsers(TokenDTO token) {
-        WebTarget webResource = jerseyClient.target(targetUrl).path("/users");
-
-        Invocation.Builder invocationBuilder = webResource.request();
-        
-        Response response = invocationBuilder.header(HttpHeaders.AUTHORIZATION, "Bearer "+token.getValue()).get();
-
-        expect(response, new int[]{200});
-
-        return response.readEntity(new GenericType<List<UserDTO>>(){});
 	}
 
 	public PrincipalDTO whoami(TokenDTO token) {

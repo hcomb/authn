@@ -8,10 +8,9 @@ import io.swagger.annotations.Tag;
         info = @Info(
                 version = "0.1",
                 title = "User service",
-                description = "Exposes user CRUD and user login operations"
+                description = "Exposes user login operation"
         ),
         tags = {
-        	@Tag(name = "user", description = "User CRUD"),
         	@Tag(name = "login", description = "User login")
         },
         schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS}

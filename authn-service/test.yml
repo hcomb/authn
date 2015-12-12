@@ -1,10 +1,10 @@
 server:
   applicationConnectors:
   - type: http 
-    port: 8080
+    port: 8280
   adminConnectors:
   - type: http
-    port: 8081
+    port: 8281
   applicationContextPath: /authn/api
   adminContextPath: /authn/admin
     
@@ -23,15 +23,6 @@ authTimeout:
    
 authzUrl:
    http://localhost:8180/authz/api
-      
-jdbcConfig:
-   username: root
-   password: root
-   autoCommit: false
-   host: localhost
-   port: 3306
-   schema: hcomb_authn
-   healthCheckQuery: SELECT id FROM users LIMIT 0,1
 
 corsConfig:
    methods: GET,POST,PUT,DELETE,OPTIONS

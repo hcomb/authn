@@ -4,8 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -16,9 +14,8 @@ import javax.ws.rs.core.MediaType;
 import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 
-import eu.hcomb.authn.dto.UserDTO;
-import eu.hcomb.authn.service.UserService;
-import eu.hcomb.authz.client.AuthorizationClient;
+import eu.hcomb.authz.client.UserCRUDClient;
+import eu.hcomb.authz.dto.UserDTO;
 import eu.hcomb.common.dto.Token;
 import eu.hcomb.common.service.TokenService;
 
@@ -30,11 +27,8 @@ public class UsernamePasswordLogin {
 	@Inject
 	protected TokenService tokenService;
 	
-	@Inject
-	protected UserService userService;
-	
     @Inject
-    private AuthorizationClient authzClient;
+    private UserCRUDClient userClient;
 	
     @POST
     @Timed
@@ -45,14 +39,12 @@ public class UsernamePasswordLogin {
     		@ApiParam(required = true) @FormParam("password") String password
     	) {
 
-    	UserDTO user = userService.login(username, password);
-    	
+    	UserDTO user = userClient.login(username, password);
+
     	if(user == null)
     		return new Token(false);
     	
-    	List<String> roles = authzClient.getRolesByUser(user.getUsername());
-    	
-    	Token token = tokenService.getToken(user.getUsername(), roles);
+    	Token token = tokenService.getToken(user.getUsername(), user.getRoles());
     	
     	return token;
     }
