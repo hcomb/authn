@@ -14,9 +14,11 @@ import javax.ws.rs.core.MediaType;
 import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 
+import eu.hcomb.authn.LoginEvents;
 import eu.hcomb.authz.client.UserCRUDClient;
 import eu.hcomb.authz.dto.UserDTO;
 import eu.hcomb.common.dto.Token;
+import eu.hcomb.common.service.RedisService;
 import eu.hcomb.common.service.TokenService;
 
 @Api(tags="login")
@@ -28,8 +30,11 @@ public class UsernamePasswordLogin {
 	protected TokenService tokenService;
 	
     @Inject
-    private UserCRUDClient userClient;
+    protected UserCRUDClient userClient;
 	
+    @Inject 
+    protected RedisService eventChannel;
+    
     @POST
     @Timed
     @ApiOperation(value="User login.", notes = "Let an user login, given an username and password. In case of successful login returns a JWT token.")
@@ -41,9 +46,13 @@ public class UsernamePasswordLogin {
 
     	UserDTO user = userClient.login(username, password);
 
-    	if(user == null)
+    	if(user == null){
+    		eventChannel.publish(LoginEvents.FAILED_LOGIN, username);
     		return new Token(false);
+    	}
     	
+    	eventChannel.publish(LoginEvents.SUCCESS_LOGIN, user);
+
     	Token token = tokenService.getToken(user.getUsername(), user.getRoles());
     	
     	return token;

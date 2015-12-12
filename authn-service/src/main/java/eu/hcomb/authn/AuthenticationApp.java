@@ -5,16 +5,13 @@ import io.dropwizard.setup.Environment;
 
 import javax.ws.rs.client.Client;
 
-import org.mybatis.guice.datasource.helper.JdbcHelper;
-
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
 import eu.hcomb.authn.resources.UsernamePasswordLogin;
-import eu.hcomb.common.healthcheck.DatasourceHealthCheck;
-import eu.hcomb.common.jdbc.DefaultPersistenceModule;
+import eu.hcomb.common.redis.JedisModule;
 import eu.hcomb.common.resources.WhoAmI;
 import eu.hcomb.common.web.BaseApp;
 
@@ -31,7 +28,6 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 	public void configure(Binder binder) {
 		configureSecurity(binder);
 
-		
 	}
 
 	@Override
@@ -39,7 +35,7 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 
 		this.configuration = configuration;
 
-		injector = Guice.createInjector(this);
+		injector = Guice.createInjector(this, new JedisModule(configuration, environment));
 
 		defaultConfig(environment, configuration);
         
