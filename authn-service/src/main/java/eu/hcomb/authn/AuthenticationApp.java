@@ -13,6 +13,8 @@ import com.google.inject.name.Named;
 import eu.hcomb.authn.resources.UsernamePasswordLogin;
 import eu.hcomb.common.redis.JedisModule;
 import eu.hcomb.common.resources.WhoAmI;
+import eu.hcomb.common.service.EventEmitter;
+import eu.hcomb.common.service.impl.RedisEventEmitter;
 import eu.hcomb.common.web.BaseApp;
 
 public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
@@ -25,9 +27,17 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 	
 	Client client;
 	
+	@Override
+	public String getName() {
+        return "authn-service";
+    }
+	
 	public void configure(Binder binder) {
 		configureSecurity(binder);
 
+		binder
+			.bind(EventEmitter.class)
+			.to(RedisEventEmitter.class);
 	}
 
 	@Override
@@ -35,7 +45,7 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 
 		this.configuration = configuration;
 
-		injector = Guice.createInjector(this, new JedisModule(configuration, environment));
+		injector = Guice.createInjector(this);
 
 		defaultConfig(environment, configuration);
         

@@ -11,6 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import redis.clients.jedis.JedisPool;
+
 import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 
@@ -18,6 +20,7 @@ import eu.hcomb.authn.LoginEvents;
 import eu.hcomb.authz.client.UserCRUDClient;
 import eu.hcomb.authz.dto.UserDTO;
 import eu.hcomb.common.dto.Token;
+import eu.hcomb.common.service.EventEmitter;
 import eu.hcomb.common.service.RedisService;
 import eu.hcomb.common.service.TokenService;
 
@@ -33,7 +36,7 @@ public class UsernamePasswordLogin {
     protected UserCRUDClient userClient;
 	
     @Inject 
-    protected RedisService eventChannel;
+    protected EventEmitter eventEmitter;
     
     @POST
     @Timed
@@ -47,11 +50,11 @@ public class UsernamePasswordLogin {
     	UserDTO user = userClient.login(username, password);
 
     	if(user == null){
-    		eventChannel.publish(LoginEvents.FAILED_LOGIN, username);
+    		eventEmitter.emit(LoginEvents.FAILED_LOGIN, username);
     		return new Token(false);
     	}
     	
-    	eventChannel.publish(LoginEvents.SUCCESS_LOGIN, user);
+    	eventEmitter.emit(LoginEvents.SUCCESS_LOGIN, user);
 
     	Token token = tokenService.getToken(user.getUsername(), user.getRoles());
     	

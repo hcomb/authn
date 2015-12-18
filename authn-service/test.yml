@@ -33,10 +33,3 @@ corsConfig:
 swaggerConfig:
    baseUrl: localhost:8080
    resourcePackages: eu.hcomb.common.resources,eu.hcomb.authn.resources
-
-redis:
-  host: localhost
-  port: 6379
-  minIdle: 0
-  maxIdle: 0
-  maxTotal: 1924
