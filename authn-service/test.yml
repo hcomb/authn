@@ -21,8 +21,8 @@ authKey:
 authTimeout:
    3600
    
-authzUrl:
-   http://localhost:8180/authz/api
+authzUrl: http://localhost:8180/authz/api
+rrouterUrl: http://localhost:8480/rrouter/api
 
 corsConfig:
    methods: GET,POST,PUT,DELETE,OPTIONS
