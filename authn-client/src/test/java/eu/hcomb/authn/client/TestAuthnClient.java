@@ -19,19 +19,14 @@ public class TestAuthnClient {
 		client.setJerseyClient(jerseyClient);
 		client.setTargetUrl(targetUrl);
 		
-		TokenDTO token = client.login("alex", "pippo");
+		TokenDTO token = client.login("alex", "pipp2o");
 
 		System.out.println(token.getValue());
 
-		System.out.println("1 =====");
+		PrincipalDTO whoami = client.whoami(token);
+		System.out.println(whoami.getName());
+		System.out.println(whoami.getRoles());
 
-		for (int i = 0; i < 1000; i++) {
-			
-			PrincipalDTO whoami = client.whoami(token);
-			System.out.println(whoami.getName());
-			System.out.println(whoami.getRoles());
-	
-		}
 
 	}
 }

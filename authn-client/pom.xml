@@ -9,6 +9,7 @@
 
 	<properties>
 		<dropwizard.version>0.9.1</dropwizard.version>
+		<jedis.version>2.6.0</jedis.version>
 	</properties>
 
 	<dependencies>
@@ -20,10 +21,29 @@
 		</dependency>
 
 		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>4.0</version>
-		</dependency>
+			<exclusions>
+				<exclusion>
+					<groupId>aopalliance</groupId>
+					<artifactId>aopalliance</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.code.findbugs</groupId>
+					<artifactId>annotations</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.inject</groupId>
+					<artifactId>javax.inject</artifactId>
+				</exclusion>
+			</exclusions>		</dependency>
 		
 		<dependency>
 			<groupId>eu.hcomb</groupId>

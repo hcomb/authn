@@ -10,7 +10,9 @@ import com.google.inject.name.Named;
 import eu.hcomb.authn.resources.UsernamePasswordLogin;
 import eu.hcomb.common.resources.WhoAmI;
 import eu.hcomb.common.service.EventEmitter;
+import eu.hcomb.common.service.RedisService;
 import eu.hcomb.common.service.impl.RedisEventEmitter;
+import eu.hcomb.common.service.impl.RedisServiceJedisImpl;
 import eu.hcomb.common.web.BaseApp;
 
 public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
@@ -32,6 +34,11 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		binder
 			.bind(EventEmitter.class)
 			.to(RedisEventEmitter.class);
+		
+		binder
+			.bind(RedisService.class)
+			.to(RedisServiceJedisImpl.class);
+
 	}
 
 	@Override
@@ -48,7 +55,8 @@ public class AuthenticationApp extends BaseApp<AuthenticationConfig> {
 		environment.jersey().register(injector.getInstance(WhoAmI.class));
 
 		setUpSwagger(configuration, environment);
-						
+		
+		setupExceptionMappers();
 	}
 		
 	@Provides

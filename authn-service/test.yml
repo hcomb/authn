@@ -7,7 +7,8 @@ server:
     port: 8281
   applicationContextPath: /authn/api
   adminContextPath: /authn/admin
-    
+  registerDefaultExceptionMappers: false
+
 logging:
   level: WARN
   loggers:
@@ -23,6 +24,15 @@ authTimeout:
    
 authzUrl: http://localhost:8180/authz/api
 rrouterUrl: http://localhost:8480/rrouter/api
+
+jerseyClient:
+  timeout: 5s
+  connectionTimeout: 500ms
+  timeToLive: 1 hour
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0s
 
 corsConfig:
    methods: GET,POST,PUT,DELETE,OPTIONS
