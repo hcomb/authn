@@ -25,7 +25,7 @@
 			<artifactId>jedis</artifactId>
 			<version>${jedis.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -43,14 +43,21 @@
 					<groupId>javax.inject</groupId>
 					<artifactId>javax.inject</artifactId>
 				</exclusion>
-			</exclusions>		</dependency>
-		
+			</exclusions>
+		</dependency>
+
 		<dependency>
 			<groupId>eu.hcomb</groupId>
 			<artifactId>authn-api</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>eu.hcomb</groupId>
+			<artifactId>common-client</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

@@ -1,6 +1,5 @@
 package eu.hcomb.authn.client;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -15,21 +14,15 @@ import com.google.inject.name.Named;
 
 import eu.hcomb.authn.dto.PrincipalDTO;
 import eu.hcomb.authn.dto.TokenDTO;
+import eu.hcomb.common.client.BaseClient;
 
 @Singleton
-public class AuthenticationClient {
+public class AuthenticationClient extends BaseClient {
 
-	@Inject
-	private Client jerseyClient;
-	
 	@Inject
 	@Named("authn.url")
 	private String targetUrl;
 	
-    public void setJerseyClient(Client jerseyClient) {
-		this.jerseyClient = jerseyClient;
-	}
-
 	public void setTargetUrl(String targetUrl) {
 		this.targetUrl = targetUrl;
 	}
@@ -62,15 +55,4 @@ public class AuthenticationClient {
         return response.readEntity(TokenDTO.class);
     }
 
-
-	private void expect(Response response, int[] statusCode) {
-		boolean found = false;
-		for (int i = 0; i < statusCode.length; i++) {
-			if(response.getStatus() == statusCode[i])
-				found = true;
-		}
-		if(!found)
-			throw new RuntimeException("expecting response status "+statusCode+" but got "+ response.getStatus());
-
-	}
 }
